@@ -37,33 +37,32 @@ ul li {
   border-radius: 8px;
 }
 
-/* Galeria de Resultados (Carrossel) */
-.carousel {
-  display: flex;
-  overflow: hidden;
-  width: 100%;
+/* Galeria de Resultados */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+  gap: 20px;
   padding: 20px;
-  background: #111;
+  justify-items: center;
 }
 
-.carousel-item {
-  min-width: 100%;
+.content-grid div {
+  background: #333;
+  border-radius: 8px;
+  padding: 10px;
   text-align: center;
-  color: #fff;
-  font-size: 1.2rem;
-  padding: 20px;
-  transition: transform 0.5s ease;
+  width: 100%;
+  max-width: 300px; /* Limita o tamanho */
+  transition: border 0.3s ease;
 }
 
-.carousel:hover .carousel-item {
-  animation: slide 10s infinite; /* Animação de rolagem */
+.content-grid div:hover {
+  border: 2px solid #00ff00; /* Borda verde ao passar o mouse */
 }
 
-@keyframes slide {
-  0% { transform: translateX(0); }
-  33% { transform: translateX(-100%); }
-  66% { transform: translateX(-200%); }
-  100% { transform: translateX(0); }
+.content-grid img {
+  width: 100%; /* Assegura que as imagens ocupem toda a largura do bloco */
+  border-radius: 8px;
 }
 
 /* Benefícios Exclusivos */
@@ -174,24 +173,20 @@ ul li {
   box-shadow: 0 0 10px #00ff00;
 }
 
-/* Canvas de Confete */
-#confetti-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
 /* Ajustes Responsivos */
 @media (max-width: 768px) {
+  .content-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas para telas menores */
+  }
   .content-grid-3 {
     flex-direction: column;
   }
 }
 
 @media (max-width: 480px) {
+  .content-grid {
+    grid-template-columns: repeat(1, 1fr); /* 1 coluna para telas pequenas */
+  }
   .carousel-item {
     font-size: 1rem;
   }
