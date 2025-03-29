@@ -1,57 +1,58 @@
-// Configuração inicial do canvas (se ainda precisar de um canvas, mantive o básico)
+// Configuração inicial do canvas
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const ctx = canvas ? canvas.getContext("2d") : null;
+if (canvas) {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
 
-// Evento para clicar nos botões
+// Função para rastrear eventos de clique
+function trackEvent(category, action, label, value) {
+  gtag('event', action, {
+    'event_category': category,
+    'event_label': label,
+    'value': value
+  });
+}
+
+// Evento para clicar nos botões de oferta
 document.querySelectorAll(".buyBtn").forEach((button) => {
   button.addEventListener("click", () => {
-    alert(`Parabéns! Você selecionou ${button.getAttribute("data-plan")}.`);
+    const plan = button.getAttribute("data-plan");
+    alert(`Parabéns! Você selecionou ${plan}.`);
 
-    // Rastrear clique nos botões de oferta no Google Analytics
-    gtag('event', 'offer_click', {
-      'event_category': 'conversion',
-      'event_label': button.getAttribute("data-plan"),
-      'value': parseFloat(button.closest('.price-box').querySelector('p').textContent.replace('Por apenas R$', ''))
-    });
+    const price = parseFloat(
+      button.closest('.price-box').querySelector('p').textContent.replace('Por apenas R$', '')
+    );
+    trackEvent('conversion', 'offer_click', plan, price);
   });
 });
 
-// Mensagem de boas-vindas dinâmica no console
+// Mensagem de boas-vindas
 console.log("✨ Bem-vindo ao site de Coprodução Digital! Explore e aproveite. 🚀");
 
 // Notifica a visualização da página no Google Analytics
-gtag('event', 'page_view', {
-  'event_category': 'page_interaction',
-  'event_label': 'Página Inicial Visitada'
-});
+trackEvent('page_interaction', 'page_view', 'Página Inicial Visitada');
 
-// Rastreamento de evento para o vídeo (carregamento do iframe)
+// Rastreamento de vídeo (iframe)
 const video = document.querySelector('iframe');
-video.addEventListener('load', function () {
-  gtag('event', 'video_view', {
-    'event_category': 'engagement',
-    'event_label': 'Vídeo Assistido'
+if (video) {
+  video.addEventListener('load', () => {
+    trackEvent('engagement', 'video_view', 'Vídeo Assistido');
   });
-});
+}
 
-// Rastreamento de cliques no botão de WhatsApp
+// Rastreamento de clique no botão de WhatsApp
 const whatsappBtn = document.querySelector('.whatsapp-btn');
-whatsappBtn.addEventListener('click', function () {
-  gtag('event', 'contact_click', {
-    'event_category': 'engagement',
-    'event_label': 'Contato pelo WhatsApp'
+if (whatsappBtn) {
+  whatsappBtn.addEventListener('click', () => {
+    trackEvent('engagement', 'contact_click', 'Contato pelo WhatsApp');
   });
-});
+}
 
-// Rastreamento de interação adicional no checkout (opcional)
-const checkoutLinks = document.querySelectorAll('a[target="_blank"]');
-checkoutLinks.forEach(function(link) {
-  link.addEventListener('click', function () {
-    gtag('event', 'checkout_initiated', {
-      'event_category': 'conversion',
-      'event_label': link.href
-    });
+// Rastreamento de interação de checkout
+document.querySelectorAll('a[target="_blank"]').forEach((link) => {
+  link.addEventListener('click', () => {
+    trackEvent('conversion', 'checkout_initiated', link.href, null);
   });
 });
