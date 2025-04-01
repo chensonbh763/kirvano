@@ -336,5 +336,56 @@
     `;
     document.head.appendChild(style);
 });
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.buyBtn').forEach(button => {
+        button.addEventListener('click', function() {
+            let plan = this.parentElement.getAttribute("data-plan");
+            let price = this.parentElement.getAttribute("data-price");
+            gtag('event', 'compra_clique', {
+                'event_category': 'Botão de Compra',
+                'event_label': plan,
+                'value': price
+            });
+        });
+    });
+});
+</script>
+<script>
+document.getElementById("video").addEventListener("click", function() {
+    gtag('event', 'video_play', {
+        'event_category': 'Vídeo',
+        'event_label': 'Vídeo Principal'
+    });
+});
+</script>
+<script>
+document.querySelectorAll("a.plan-link").forEach(link => {
+    link.addEventListener("click", function() {
+        let plan = this.getAttribute("data-plan");
+        let price = this.getAttribute("data-price");
+        gtag('event', 'clique_pagamento', {
+            'event_category': 'Pagamento',
+            'event_label': plan,
+            'value': price
+        });
+    });
+});
+</script>
+<script>
+window.addEventListener('scroll', function() {
+    let scrollTop = window.scrollY;
+    let docHeight = document.documentElement.scrollHeight;
+    let winHeight = window.innerHeight;
+    let scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
+    
+    if (scrollPercent > 75) { // Quando o usuário rolar 75% da página
+        gtag('event', 'scroll_75', {
+            'event_category': 'Engajamento',
+            'event_label': 'Usuário rolou 75% da página'
+        });
+    }
+});
+</script>
 
 </script>
